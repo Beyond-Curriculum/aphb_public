@@ -32,11 +32,11 @@ export const getNearestStandings = async (standing: IStandings, numberOfStanding
 	) {
 		curExpansion += 0.5;
 		// Expand to the left while total deviation is less than or equal to curExpansion
-		if (leftIndex > 0 && (standings[leftIndex].total - standing.total) <= curExpansion) {
+		while (leftIndex > 0 && (standings[leftIndex].total - standing.total) <= curExpansion) {
 			leftIndex--;
 		}
 		// Expand to the right while total deviation is less than or equal to curExpansion
-		if (rightIndex < standings.length - 1 && (standing.total - standings[rightIndex].total) <= curExpansion) {
+		while (rightIndex < standings.length - 1 && (standing.total - standings[rightIndex].total) <= curExpansion) {
 			rightIndex++;
 		}
 		// Break if we reached the ends of the standings
