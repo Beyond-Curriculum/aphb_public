@@ -33,17 +33,19 @@ class BattlesService {
 		const pastBattles = await this.getBattles();
 
 		let specialTeam: IStandings | null = null;
-		const teamsCopy = [...teams];
+		const specialBattles = pastBattles.filter(battle => battle.teams.length === 1);
+		// filter out teams that appeared in special battles
+		const teamsCopy = teams.filter(team => !specialBattles.some(battle => battle.teams[0].id === team.id));
 		if (teams.length % 2 !== 0) { // Check for odd number of teams
-			while(specialTeam === null) {
-				const middleIndex = Math.floor(teamsCopy.length / 2);
-				const middleTeam = teamsCopy[middleIndex];
-				if (pastBattles.some(battle => battle.teams.length === 1 && battle.teams[0].toString() === middleTeam.id)) {
-					teamsCopy.splice(middleIndex, 1);
-				} else {
-					specialTeam = middleTeam;
-					teams.splice(middleIndex, 1);
-				}
+			if (teamsCopy.length === 0) {
+				specialTeam = specialBattles[
+					(tour - 1) % specialBattles.length
+				].teams[0];
+			} else {
+			const middleIndex = Math.floor(teamsCopy.length / 2);
+			const middleTeam = teamsCopy[middleIndex];
+			specialTeam = middleTeam;
+			teams.splice(middleIndex, 1);
 			}
 		}
 
