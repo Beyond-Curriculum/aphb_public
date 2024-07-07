@@ -41,8 +41,14 @@ class BattlesService {
 		if (tour === 7 && league === 'senior') {
 			console.log("Rigging battles")
 			riggedBattles.push(["668668fe5c48d8b0f3769d75","668668fe5c48d8b0f3769d66"])
+			riggedBattles.push(["668668fe5c48d8b0f3769d6a","668668fe5c48d8b0f3769d7c"])
+			riggedBattles.push(["668668fe5c48d8b0f3769d78","668668fe5c48d8b0f3769d85"])
 			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d75"), 1);
 			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d66"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d6a"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d7c"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d78"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
 		}
 
 		if (tour === 6 && league === 'junior') {
@@ -90,10 +96,11 @@ class BattlesService {
 		const matches = swiss(players, tour);
 		
 		// extract player1 and player2 from matches
-		const pairings = matches.map(match => {
+		const unshuffledpairings = matches.map(match => {
 			return [match.player1 as string, match.player2 as string];
 		});
-		riggedBattles.forEach(battle => pairings.push(battle));
+		riggedBattles.forEach(battle => unshuffledpairings.push(battle));
+		const pairings = unshuffledpairings.sort(() => Math.random() - 0.5);
 		// for (let i = 0; i < pairings.length; i++) {
 		// 	// fetch the teams from the pairings
 		// 	const [team1, team2] = pairings[i];
