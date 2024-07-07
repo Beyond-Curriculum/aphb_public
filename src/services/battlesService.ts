@@ -51,13 +51,20 @@ class BattlesService {
 
 		const swiss = await import('tournament-pairings').then(module => module.Swiss);
 		const players = teams.map(team => {
-			const opponents = pastBattles.filter(battle => battle.teams.includes(team.id)).map(battle => battle.teams.find(t => t.id !== team.id)!);
-			const avoid = opponents.map(opponent => opponent.toString());
-
+			// each team in battle.teams is an object with name and we need to find all that team's past opponents
+			const teamBattles = pastBattles.filter(battle => battle.teams.some(battleTeam => battleTeam.id === team.id));
+			const opponents = teamBattles.map(battle => {
+				const opponent = battle.teams.find(battleTeam => battleTeam.id !== team.id);
+				if (!opponent) {
+					return '';
+				}
+				return opponent.id;
+			})
+			
 			return {
 				id: team.id,
 				score: team.total,
-				avoid
+				avoid: opponents
 			};
 		})
 
