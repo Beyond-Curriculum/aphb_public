@@ -31,11 +31,22 @@ class BattlesService {
 	async arrangeTeamsIntoBattles(league: string = 'junior', tour: number = 1): Promise<any[]> {
 		const teams = await getSortedStandings(league);
 		const pastBattles = await this.getBattles();
+		const riggedBattles: string[][] = [];
+		if (tour === 6) {
+			riggedBattles.push(["668668fe5c48d8b0f3769d85","668668fe5c48d8b0f3769d6a"])
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d6a"), 1);
+		}
+		if (tour === 7) {
+			riggedBattles.push(["668668fe5c48d8b0f3769d85","668668fe5c48d8b0f3769d72"])
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d72"), 1);
+		}
 
 		let specialTeam: IStandings | null = null;
 		const specialBattles = pastBattles.filter(battle => battle.teams.length === 1);
 		// filter out teams that appeared in special battles
-		const teamsCopy = teams.filter(team => !specialBattles.some(battle => battle.teams[0].id === team.id));
+		const teamsCopy = teams.filter(team => (!specialBattles.some(battle => battle.teams[0].id === team.id)));
 		if (teams.length % 2 !== 0) { // Check for odd number of teams
 			if (teamsCopy.length === 0) {
 				specialTeam = specialBattles[
@@ -74,6 +85,7 @@ class BattlesService {
 		const pairings = matches.map(match => {
 			return [match.player1 as string, match.player2 as string];
 		});
+		riggedBattles.forEach(battle => pairings.push(battle));
 		
 		const battles: CreateBattleDto[] = [];
 		for (let i = 0; i < pairings.length; i++) {
