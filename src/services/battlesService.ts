@@ -29,18 +29,26 @@ class BattlesService {
 	}
 
 	async arrangeTeamsIntoBattles(league: string = 'junior', tour: number = 1): Promise<any[]> {
+		console.log("Tour: ", tour);
 		const teams = await getSortedStandings(league);
 		const pastBattles = await this.getBattles();
 		const riggedBattles: string[][] = [];
-		if (tour === 6) {
+		if (tour === 6 && league === 'senior') {
+			riggedBattles.push(["668668fe5c48d8b0f3769d85","668668fe5c48d8b0f3769d72"])
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d72"), 1);
+		}
+		if (tour === 7 && league === 'senior') {
+			console.log("Rigging battles")
 			riggedBattles.push(["668668fe5c48d8b0f3769d85","668668fe5c48d8b0f3769d6a"])
 			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
 			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d6a"), 1);
 		}
-		if (tour === 7) {
-			riggedBattles.push(["668668fe5c48d8b0f3769d85","668668fe5c48d8b0f3769d72"])
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d72"), 1);
+
+		if (tour === 6 && league === 'junior') {
+			riggedBattles.push(["668668fe5c48d8b0f3769d73","668668fe5c48d8b0f3769d80"])
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d73"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d80"), 1);
 		}
 
 		let specialTeam: IStandings | null = null;
@@ -80,7 +88,7 @@ class BattlesService {
 		})
 
 		const matches = swiss(players, tour);
-
+		
 		// extract player1 and player2 from matches
 		const pairings = matches.map(match => {
 			return [match.player1 as string, match.player2 as string];
