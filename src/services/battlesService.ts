@@ -40,9 +40,9 @@ class BattlesService {
 		}
 		if (tour === 7 && league === 'senior') {
 			console.log("Rigging battles")
-			riggedBattles.push(["668668fe5c48d8b0f3769d85","668668fe5c48d8b0f3769d6a"])
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d6a"), 1);
+			riggedBattles.push(["668668fe5c48d8b0f3769d75","668668fe5c48d8b0f3769d66"])
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d75"), 1);
+			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d66"), 1);
 		}
 
 		if (tour === 6 && league === 'junior') {
@@ -94,7 +94,14 @@ class BattlesService {
 			return [match.player1 as string, match.player2 as string];
 		});
 		riggedBattles.forEach(battle => pairings.push(battle));
-		
+		// for (let i = 0; i < pairings.length; i++) {
+		// 	// fetch the teams from the pairings
+		// 	const [team1, team2] = pairings[i];
+		// 	const team_1 = await Standings.findById(team1)
+		// 	const team_2 = await Standings.findById(team2)
+		// 	console.log(team_1?.name + " vs " + team_2?.name);
+		// }
+		// return []
 		const battles: CreateBattleDto[] = [];
 		for (let i = 0; i < pairings.length; i++) {
 			const [team1, team2] = pairings[i];
