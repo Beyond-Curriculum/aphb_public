@@ -32,30 +32,6 @@ class BattlesService {
 		console.log("Tour: ", tour);
 		const teams = await getSortedStandings(league);
 		const pastBattles = await this.getBattles();
-		const riggedBattles: string[][] = [];
-		if (tour === 6 && league === 'senior') {
-			riggedBattles.push(["668668fe5c48d8b0f3769d85","668668fe5c48d8b0f3769d72"])
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d72"), 1);
-		}
-		if (tour === 7 && league === 'senior') {
-			console.log("Rigging battles")
-			riggedBattles.push(["668668fe5c48d8b0f3769d75","668668fe5c48d8b0f3769d66"])
-			riggedBattles.push(["668668fe5c48d8b0f3769d6a","668668fe5c48d8b0f3769d7c"])
-			riggedBattles.push(["668668fe5c48d8b0f3769d78","668668fe5c48d8b0f3769d85"])
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d75"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d66"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d6a"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d7c"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d78"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d85"), 1);
-		}
-
-		if (tour === 6 && league === 'junior') {
-			riggedBattles.push(["668668fe5c48d8b0f3769d73","668668fe5c48d8b0f3769d80"])
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d73"), 1);
-			teams.splice(teams.findIndex(team => team.id === "668668fe5c48d8b0f3769d80"), 1);
-		}
 
 		let specialTeam: IStandings | null = null;
 		const specialBattles = pastBattles.filter(battle => battle.teams.length === 1);
@@ -99,16 +75,7 @@ class BattlesService {
 		const unshuffledpairings = matches.map(match => {
 			return [match.player1 as string, match.player2 as string];
 		});
-		riggedBattles.forEach(battle => unshuffledpairings.push(battle));
 		const pairings = unshuffledpairings.sort(() => Math.random() - 0.5);
-		// for (let i = 0; i < pairings.length; i++) {
-		// 	// fetch the teams from the pairings
-		// 	const [team1, team2] = pairings[i];
-		// 	const team_1 = await Standings.findById(team1)
-		// 	const team_2 = await Standings.findById(team2)
-		// 	console.log(team_1?.name + " vs " + team_2?.name);
-		// }
-		// return []
 		const battles: CreateBattleDto[] = [];
 		for (let i = 0; i < pairings.length; i++) {
 			const [team1, team2] = pairings[i];
